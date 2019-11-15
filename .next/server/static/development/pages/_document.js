@@ -2261,6 +2261,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+function withLog(Comp) {
+  return function (props) {
+    console.log(props);
+    return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(Comp, props);
+  };
+}
+
 var MyDocument =
 /*#__PURE__*/
 function (_Document) {
@@ -2283,19 +2290,32 @@ function (_Document) {
       var _getInitialProps = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
       /*#__PURE__*/
       _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(ctx) {
-        var props;
+        var originalRenderPage, props;
         return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                originalRenderPage = ctx.renderPage;
+
+                ctx.renderPage = function () {
+                  return originalRenderPage({
+                    enhanceApp: function enhanceApp(App) {
+                      return withLog(App);
+                    },
+                    enhanceComponment: function enhanceComponment(Component) {
+                      return withLog(Component);
+                    }
+                  });
+                };
+
+                _context.next = 4;
                 return next_document__WEBPACK_IMPORTED_MODULE_9___default.a.getInitialProps(ctx);
 
-              case 2:
+              case 4:
                 props = _context.sent;
                 return _context.abrupt("return", Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_1__["default"])({}, props));
 
-              case 4:
+              case 6:
               case "end":
                 return _context.stop();
             }
