@@ -1,1 +1,53 @@
-export default () => <span>B</span>
+import {useState, useEffect, useLayoutEffect, useReducer, useContext} from 'react'
+import MyContext from '../../lib/my-context'
+
+function countReducer(state, action) {
+  switch (action.type) {
+    case 'add':
+      return state + 1
+    case 'minus':
+      return state - 1
+    default:
+      return state
+  }
+}
+
+function MyCountFunc() {
+  // const [count, setCount] = useState(0)
+
+  const [count, dispatchCount] = useReducer(countReducer, 0)
+  const [name, setName] = useState('weiyan')
+
+  const context = useContext(MyContext)
+
+  // useEffect(() => {
+  //   const interVal = setInterval(() => {
+  //     setCount(count + 1)
+  //     // dispatchCount({ type: 'minus'})
+  //   }, 1000)
+  //   return () => clearInterval(interVal)
+  // }, [count])
+  // return <span>{count}</span>
+  useLayoutEffect(() => {
+    console.log('layout effect invoked')
+    return () => {
+      console.log('layout effect deteched')
+    };
+  }, [count])
+
+  useEffect(() => {
+    console.log('effect invoked')
+    return () => {
+      console.log('effect deteched')
+    };
+  }, [count])
+  return (
+    <div>
+      <input value={name} onChange = {(e) => setName(e.target.value)} />
+      <button onClick={() => dispatchCount({type: 'add'})}>{count}</button>
+      <p>{context}</p>
+    </div>
+  )
+}
+
+export default MyCountFunc
