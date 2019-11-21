@@ -272,41 +272,53 @@ function MyCountFunc() {
       name = _useState2[0],
       setName = _useState2[1];
 
-  var context = Object(react__WEBPACK_IMPORTED_MODULE_1__["useContext"])(_lib_my_context__WEBPACK_IMPORTED_MODULE_2__["default"]); // useEffect(() => {
-  //   const interVal = setInterval(() => {
-  //     setCount(count + 1)
-  //     // dispatchCount({ type: 'minus'})
-  //   }, 1000)
-  //   return () => clearInterval(interVal)
-  // }, [count])
-  // return <span>{count}</span>
+  var countRef = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])();
+  countRef.current = count;
+  var config = Object(react__WEBPACK_IMPORTED_MODULE_1__["useMemo"])(function () {
+    return {
+      text: "count is ".concat(count),
+      color: count > 3 ? 'red' : 'blue'
+    };
+  }, [count]); // const handleButtonClick = useCallback(() => dispatchCount({type: 'add'}), [])
 
-  Object(react__WEBPACK_IMPORTED_MODULE_1__["useLayoutEffect"])(function () {
-    console.log('layout effect invoked');
+  var handleButtonClick = Object(react__WEBPACK_IMPORTED_MODULE_1__["useMemo"])(function () {
     return function () {
-      console.log('layout effect deteched');
+      return dispatchCount({
+        type: 'add'
+      });
     };
-  }, [count]);
-  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
-    console.log('effect invoked');
-    return function () {
-      console.log('effect deteched');
-    };
-  }, [count]);
+  }, []);
+
+  var handleAlertButtonClick = function handleAlertButtonClick() {
+    setTimeout(function () {
+      alert(countRef.current);
+    }, 2000);
+  };
+
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
     value: name,
     onChange: function onChange(e) {
       return setName(e.target.value);
     }
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Child, {
+    config: config,
+    onButtonClick: handleButtonClick
   }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-    onClick: function onClick() {
-      return dispatchCount({
-        type: 'add'
-      });
-    }
-  }, count), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, context));
+    onClick: handleAlertButtonClick
+  }, "alart count"));
 }
 
+var Child = Object(react__WEBPACK_IMPORTED_MODULE_1__["memo"])(function Child(_ref) {
+  var onButtonClick = _ref.onButtonClick,
+      config = _ref.config;
+  console.log('child render');
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+    onClick: onButtonClick,
+    style: {
+      color: config.color
+    }
+  }, config.text);
+});
 /* harmony default export */ __webpack_exports__["default"] = (MyCountFunc);
 
 /***/ }),
