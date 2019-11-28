@@ -1,30 +1,72 @@
-import { createStore } from 'redux'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
 import ReduxThunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
+
 const initialState = {
   count: 0
 }
+const userInitialState = {
+  username: 'weiyan'
+}
 const ADD = 'ADD'
-function reducer(state = initialState, action) {
+
+function counterReducer(state = initialState, action) {
   console.log(state, action)
   switch (action.type) {
     case ADD:
-      return {...state, count: state.count + 1}
+      return {count: state.count + (action.num || 1)}
     default:
       return state
   }
 }
 
-const store = createStore(reducer, initialState,
-  composeWithDevTools(applyMiddleware(ReduxThunk)),
-)
+const UPDATE_USERNAME = 'UPDATE_USERNAME'
+function userReducer(state = userInitialState, action) {
+  switch (action.type) {
+    case UPDATE_USERNAME:
+      return {
+        ...state,
+        username: action.name,
+      }
+    default:
+      return state
+  }
+}
 
-// console.log(store.getState())
-store.dispatch({type: 'ADD'})
-// console.log(store.getState())
-
-store.subscribe(() => {
-  console.log(store.getState())
+const allReducers = combineReducers({
+  counter: counterReducer,
+  user: userReducer,
 })
-store.dispatch({type: 'ADD'})
-export default store
+
+
+// action creatore
+export function add(num) {
+  return {
+    type: ADD,
+    num,
+  }
+}
+
+export function addAsync(num) {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(add(num), 1000)
+    })
+  }
+}
+
+export default function initializeStore(state){
+  const store = createStore(
+    allReducers,
+    // {
+    //   counter: initialState,
+    //   user: userInitialState,
+    // },
+    Object.assign({}, {
+      counter: initialState,
+      user: userInitialState,
+    }, state),
+    composeWithDevTools(applyMiddleware(ReduxThunk)),
+  )
+  return store
+}
