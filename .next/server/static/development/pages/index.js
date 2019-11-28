@@ -852,19 +852,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs2/helpers/esm/asyncToGenerator.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
-/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! next/router */ "next/router");
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-redux */ "react-redux");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../store/store */ "./store/store.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "axios");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
+/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! next/router */ "next/router");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-redux */ "react-redux");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var next_config__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! next/config */ "next/config");
+/* harmony import */ var next_config__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(next_config__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../store/store */ "./store/store.js");
+
+
+
+// import '../test.css'
 
 
 
 
 
- // import store from '../store/store'
+
+
+var _getConfig = next_config__WEBPACK_IMPORTED_MODULE_7___default()(),
+    publicRuntimeConfig = _getConfig.publicRuntimeConfig; // import store from '../store/store'
+
 
 
 
@@ -876,7 +888,7 @@ var Index = function Index(_ref) {
 
   function gotoTestB() {
     // Router.push('/test/b')
-    next_router__WEBPACK_IMPORTED_MODULE_4___default.a.push({
+    next_router__WEBPACK_IMPORTED_MODULE_5___default.a.push({
       pathname: '/test/b',
       query: {
         id: 2
@@ -884,6 +896,11 @@ var Index = function Index(_ref) {
     }, '/test/b/2');
   }
 
+  Object(react__WEBPACK_IMPORTED_MODULE_2__["useEffect"])(function () {
+    axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/api/user/info').then(function (resp) {
+      return console.log(resp);
+    });
+  }, []);
   return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_2___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("span", null, "Count: ", counter), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("a", null, "UserName: ", username), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("input", {
     value: username,
     onChange: function onChange(e) {
@@ -893,7 +910,9 @@ var Index = function Index(_ref) {
     onClick: function onClick() {
       add(counter);
     }
-  }, "do add"));
+  }, "do add"), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("a", {
+    href: publicRuntimeConfig.OAUTH_URL
+  }, "\u53BB\u767B\u9646"));
 };
 
 Index.getInitialProps =
@@ -908,7 +927,7 @@ function () {
         switch (_context.prev = _context.next) {
           case 0:
             reduxStore = _ref2.reduxStore;
-            reduxStore.dispatch(Object(_store_store__WEBPACK_IMPORTED_MODULE_6__["add"])(2)); // console.log(reduxStroe)
+            reduxStore.dispatch(Object(_store_store__WEBPACK_IMPORTED_MODULE_8__["add"])(2)); // console.log(reduxStroe)
 
             return _context.abrupt("return", {});
 
@@ -925,7 +944,7 @@ function () {
   };
 }();
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["connect"])(function mapStateToProps(state) {
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_6__["connect"])(function mapStateToProps(state) {
   return {
     counter: state.counter.count,
     username: state.user.username
@@ -1057,6 +1076,17 @@ function initializeStore(state) {
 
 module.exports = __webpack_require__(/*! /mnt/d/code/nextjs/nextjs-project/pages/index.js */"./pages/index.js");
 
+
+/***/ }),
+
+/***/ "axios":
+/*!************************!*\
+  !*** external "axios" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("axios");
 
 /***/ }),
 
@@ -1200,6 +1230,17 @@ module.exports = require("core-js/library/fn/symbol/iterator");
 /***/ (function(module, exports) {
 
 module.exports = require("next-server/dist/lib/utils");
+
+/***/ }),
+
+/***/ "next/config":
+/*!******************************!*\
+  !*** external "next/config" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("next/config");
 
 /***/ }),
 
