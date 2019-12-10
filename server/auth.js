@@ -49,4 +49,26 @@ module.exports = (server) => {
       await next()
     }
   })
+  server.use(async (ctx, next) => {
+    const path = ctx.path
+    const method = ctx.method
+    if (path === '/logout' && method === 'post') {
+      ctx.session = null
+      ctx.body = `logout success`
+    } else {
+      await next()
+    }
+  })
+
+  server.use(async (ctx, next) => {
+    const path = ctx.path
+    const method = ctx.method
+    if (path === '/prepare-auth' && method==='GET') {
+      const { url } = ctx.query //store url before OAuth
+      ctx.session.urlBeforeOAuth = url
+    } else {
+      await next()
+    }
+  })
 }
+

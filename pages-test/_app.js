@@ -3,6 +3,7 @@ import { Provider } from 'react-redux'
 
 import 'antd/dist/antd.css'
 
+import MyContext from '../lib/my-context'
 import Layout from '../components/Layout'
 
 import testHoc from '../lib/withRedux'
@@ -29,9 +30,14 @@ class MyApp extends App {
     return (
       <Container>
         <Provider store={reduxStore}>
-        <Layout>
-            <Component {...pageProps}/>
-        </Layout>
+          <Layout>
+            <MyContext.Provider value={this.state.context}>
+              <Component {...pageProps}/>
+              {/* <button onClick={() => this.setState({ context: `${this.state.context}111`})} >
+                update context
+              </button> */}
+            </MyContext.Provider>
+          </Layout>
         </Provider>
         {/* <Component {...pageProps}/> */}
       </Container>
