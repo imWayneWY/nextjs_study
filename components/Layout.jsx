@@ -58,7 +58,7 @@ function MyLayout ({ children, user, logout, router }) {
   const userDropDown = (
     <Menu>
       <Menu.Item>
-        <a href="javascript:void(0)" onClick={handleLogout}>Log Out</a>
+        <a onClick={handleLogout}>Log Out</a>
       </Menu.Item>
     </Menu>
   )
@@ -101,7 +101,8 @@ function MyLayout ({ children, user, logout, router }) {
                 )
                 :(
                   <Tooltip title="Click here to Login In"> 
-                    <a href= {publicRuntimeConfig.OAUTH_URL} onClick={handleGotoOAuth}>
+                    {/* <a href= {publicRuntimeConfig.OAUTH_URL} onClick={handleGotoOAuth}> */}
+                    <a href={`/prepare-auth?url=${router.asPath}`}>
                       <Avatar size={40} icon="user" />
                     </a>
                   </Tooltip>

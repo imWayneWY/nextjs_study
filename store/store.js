@@ -6,6 +6,7 @@ import axios from 'axios'
 //   count: 0
 // }
 const userInitialState = {
+  user: {}
   // username: 'weiyan'
 }
 // const ADD = 'ADD'
@@ -38,10 +39,7 @@ const LOGOUT = 'LOGOUT'
 function userReducer(state = userInitialState, action) {
   switch (action.type) {
     case LOGOUT: {
-      return {
-        ...state,
-        user: {},
-      }
+      return {}
     }
     default:
       return state
