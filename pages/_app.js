@@ -9,6 +9,9 @@ import testHoc from '../lib/withRedux'
 import PageLoading from '../components/PageLoading'
 import Link from 'next/link'
 
+import axios from 'axios'
+
+
 class MyApp extends App {
   state = {
     context: 'value',
@@ -27,6 +30,7 @@ class MyApp extends App {
     Router.events.on('routeChangeStart', this.startLoading)
     Router.events.on('routeChangeComplete', this.stopLoading)
     Router.events.on('routeChangeError', this.stopLoading)
+
   }
 
   componentWillUnmount() {

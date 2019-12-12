@@ -4,6 +4,8 @@ const next = require('next')
 const session = require('koa-session')
 const Redis = require('ioredis')
 const auth = require('./server/auth')
+const api = require('./server/api')
+const koaBody = require('koa-body')
 
 const RedisSessionStore = require('./server/session-store')
 
@@ -20,6 +22,8 @@ app.prepare().then(() => {
   const server = new Koa()
   const router = new Router()
 
+  server.use(koaBody())
+
   server.keys = ['Wei yan develop Github App']
   const SESSION_CONFIG = {
     key: 'sid',
@@ -31,6 +35,7 @@ app.prepare().then(() => {
 
   // 配置处理github OAuth的登录
   auth(server)
+  api(server)
 
   // server.use(async (ctx, next) => {
   //   // console.log(ctx.cookies.get('id'))

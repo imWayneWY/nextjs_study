@@ -29,8 +29,9 @@ const Comp = ({children, color, style}) => {
   )
 }
 
-function MyLayout ({ children, user, logout, router }) {
-  const [search, setSearch] = useState('')
+function MyLayout ({ children, user, logout, router, }) {
+  const urlQuery = router.query && router.query.query
+  const [search, setSearch] = useState(urlQuery || '')
 
   const handleSearchChange = useCallback(
     (event) => {
@@ -65,9 +66,9 @@ function MyLayout ({ children, user, logout, router }) {
 
   const handleOnSearch = useCallback(
     () => {
-      // 待加入
+      router.push(`/search?query=${search}`)
     },
-    [],
+    [search],
   )
 
   return (
@@ -77,7 +78,9 @@ function MyLayout ({ children, user, logout, router }) {
         {/* <div className="header-inner"> */}
           <div className="header-left">
             <div className="logo">
-              <Icon type="github" style={githubIconStyle}></Icon>
+              <Link href='/'>
+                <Icon type="github" style={githubIconStyle}></Icon>
+              </Link>
             </div>
             <div>
               <Input.Search 
@@ -138,11 +141,14 @@ function MyLayout ({ children, user, logout, router }) {
           height: 100%;
         }
         .ant-layout {
-          height: 100%;
+          min-height: 100%;
         }
         .ant-layout-header{
           padding-left: 0;
           padding-right: 0;
+        }
+        .ant-layout {
+          background: #fff;
         }
       `}
       </style>
