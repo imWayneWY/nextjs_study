@@ -117,7 +117,7 @@ function MyLayout ({ children, user, logout, router, }) {
         </Container>
       </Header>
       <Content>
-        <Container renderer={<Comp color="red"/>} >
+        <Container renderer={<Comp/>} >
         {/* <Container render={<div />} > */}
           {children}
         </Container>
