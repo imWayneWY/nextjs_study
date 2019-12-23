@@ -5,12 +5,19 @@ import getConfig from 'next/config'
 import { connect } from 'react-redux'
 import Repo from '../components/Repo'
 import Router, { withRouter } from 'next/router'
+import LRU from 'lru-cache'
+
+const cache = new LRU({
+  maxAge: 1000 * 60 * 10 //10 mins
+})
 
 const { publicRuntimeConfig } = getConfig()
 
-
-
 const api = require('../lib/api')
+
+const isServer = typeof window === 'undefined'
+
+let cachedUserRepos, cachedUserStaredRepos
 
 function Index ({ userRepos, userStaredRepos, user, router }) {
   const tabKey = router.query.key || '1'
@@ -18,6 +25,25 @@ function Index ({ userRepos, userStaredRepos, user, router }) {
   const handleTabChange = (activeKey) => {
     Router.push(`/?key=${activeKey}`)
   }
+
+  useEffect(() => {
+    if (!isServer) {
+      if (userRepos) {
+        cache.set('userRepos', userRepos)
+      }
+      if (userStaredRepos) {
+        cache.set('userStaredRepos', userStaredRepos)
+      }
+      // cachedUserRepos = userRepos
+      // cachedUserStaredRepos = userStaredRepos
+      // const timeout = setTimeout(() => {  // 另一种设置时间缓存机制的方法
+                                              // 10分钟肯定或大概率要更新，就使用这种方式
+                                              // 如果大概率不会更新 LRU更好
+      //   cachedUserRepos = null
+      //   cachedUserStaredRepos = null
+      // }, 1000 * 10)
+    }
+  }, [userRepos, userStaredRepos]) //传入这两个props，这样在10分钟以后才会再次存cache，否则useEffect只在渲染时执行一次！
   
   if (!user || !user.id) {
     return <div className="root">
@@ -50,10 +76,10 @@ function Index ({ userRepos, userStaredRepos, user, router }) {
       <div className="user-repos">
           <Tabs defaultActiveKey={tabKey} onChange={handleTabChange} animated={false}>
             <Tabs.TabPane tab="Your Repos" key="1">
-              {userRepos.map(repo => <Repo repo={repo}/>)}
+              {userRepos.map(repo => <Repo key={repo.id} repo={repo}/>)}
             </Tabs.TabPane>
             <Tabs.TabPane tab="Your Stared Repos" key="2">
-              {userStaredRepos.map(repo => <Repo repo={repo}/>)}
+              {userStaredRepos.map(repo => <Repo key={repo.id} repo={repo}/>)}
             </Tabs.TabPane>
           </Tabs>
       </div>
@@ -94,6 +120,7 @@ function Index ({ userRepos, userStaredRepos, user, router }) {
     </div>
   )
 }
+
 Index.getInitialProps = async ({ctx, reduxStore}) => {
   // const result =   await  axios.get('/github/search/repositories?q=react')
   //     .then(resp => console.log(resp))
@@ -104,6 +131,15 @@ Index.getInitialProps = async ({ctx, reduxStore}) => {
     return {
     }
   }
+  if (!isServer) {
+    if (cache.get('userStaredRepos') && cache.get('userRepos')) {
+      return {
+        userRepos: cache.get('userRepos'),
+        userStaredRepos: cache.get('userStaredRepos'),
+      }
+    }
+  }
+  
   const userRepos = await api.request(
     {
       // url: '/search/repositories?q=react',
@@ -115,6 +151,7 @@ Index.getInitialProps = async ({ctx, reduxStore}) => {
   const userStaredRepos = await api.request({
     url: '/user/starred',
   }, ctx.req, ctx.res)
+
   return {
     // data: result.data
     userRepos: userRepos.data,
@@ -122,10 +159,10 @@ Index.getInitialProps = async ({ctx, reduxStore}) => {
   }
 }
 
-export default connect(
+export default withRouter(connect(
   function mapState(state) {
     return {
       user: state.user
     }
   }
-)(withRouter(Index))
+)(Index))
