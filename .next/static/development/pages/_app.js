@@ -59478,11 +59478,7 @@ function (_App) {
           reduxStore = _this$props.reduxStore;
       return react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(next_app__WEBPACK_IMPORTED_MODULE_10__["Container"], null, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_11__["Provider"], {
         store: reduxStore
-      }, this.state.loading ? react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(_components_PageLoading__WEBPACK_IMPORTED_MODULE_16__["default"], null) : null, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(_components_Layout__WEBPACK_IMPORTED_MODULE_14__["default"], null, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(next_link__WEBPACK_IMPORTED_MODULE_17___default.a, {
-        href: "/"
-      }, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("a", null, "Index")), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(next_link__WEBPACK_IMPORTED_MODULE_17___default.a, {
-        href: "/detail"
-      }, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("a", null, "Detail")), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(Component, pageProps))));
+      }, this.state.loading ? react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(_components_PageLoading__WEBPACK_IMPORTED_MODULE_16__["default"], null) : null, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(_components_Layout__WEBPACK_IMPORTED_MODULE_14__["default"], null, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(Component, pageProps))));
     }
   }], [{
     key: "getInitialProps",

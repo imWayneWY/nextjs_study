@@ -1,8 +1,10 @@
 import axios from 'axios'
 import { useEffect } from 'react'
-import { Button, Icon } from 'antd'
+import { Button, Icon, Tabs } from 'antd'
 import getConfig from 'next/config'
 import { connect } from 'react-redux'
+import Repo from '../components/Repo'
+import Router, { withRouter } from 'next/router'
 
 const { publicRuntimeConfig } = getConfig()
 
@@ -10,7 +12,13 @@ const { publicRuntimeConfig } = getConfig()
 
 const api = require('../lib/api')
 
-function Index ({ userRepos, userStaredRepos, user }) { 
+function Index ({ userRepos, userStaredRepos, user, router }) {
+  const tabKey = router.query.key || '1'
+
+  const handleTabChange = (activeKey) => {
+    Router.push(`/?key=${activeKey}`)
+  }
+  
   if (!user || !user.id) {
     return <div className="root">
       <p>You haven't login yet</p>
@@ -35,10 +43,54 @@ function Index ({ userRepos, userStaredRepos, user }) {
         <span className="name">{user.name}</span>
         <span className="bio">{user.bio}</span>
         <p className="email">
-          <Icon type="email" style={{ marginRight: 10 }}></Icon>
+          <Icon type="mail" style={{ marginRight: 10 }}></Icon>
           <a href={`mailto:${user.email}`}>{user.email}</a>
         </p>
       </div>
+      <div className="user-repos">
+          <Tabs defaultActiveKey={tabKey} onChange={handleTabChange} animated={false}>
+            <Tabs.TabPane tab="Your Repos" key="1">
+              {userRepos.map(repo => <Repo repo={repo}/>)}
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Your Stared Repos" key="2">
+              {userStaredRepos.map(repo => <Repo repo={repo}/>)}
+            </Tabs.TabPane>
+          </Tabs>
+      </div>
+      <style jsx>{`
+        .root {
+          display: flex;
+          align-items: flex-start;
+          padding: 20px 0;
+        }
+        .user-info {
+          width: 200px;
+          margin-right: 40px;
+          flex-shrink: 0;
+          display: flex;
+          flex-direction: column;
+        }
+        .login {
+          font-weight: 800;
+          font-size: 20px;
+          margin-top: 20px;
+        }
+        .name {
+          font-size: 16px;
+          color: #777;
+        }
+        .bio {
+          margin-top: 20px;
+          color: #333;
+        }
+        .avatar {
+          width: 100%;
+          border-radius: 5px;
+        }
+        .user-rops {
+          flex-grow: 1
+        }
+      `}</style>
     </div>
   )
 }
@@ -76,4 +128,4 @@ export default connect(
       user: state.user
     }
   }
-)(Index)
+)(withRouter(Index))
