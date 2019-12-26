@@ -21,7 +21,7 @@ export default ({ repo }) => {
         <p className="repo-desc">{repo.description}</p>
         <p className="other-info">
           {repo.license
-            ? <span className="license">{getLicense(repo.license)}</span>
+            ? <span className="license">{getLicense(repo.license)} </span>
             : null
           }
           <span className="last-updated">{getLastUpdated(repo.updated_at)}</span>

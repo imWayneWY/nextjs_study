@@ -1,11 +1,10 @@
 import { withRouter } from 'next/router'
 import { Row, Col, List, Pagination } from 'antd'
-import { Item } from 'rc-menu'
 import Link from 'next/link'
 import Router from 'next/router'
-import { useCallback, memo, isValidElement } from 'react'
+import { useCallback, memo, isValidElement, useEffect } from 'react'
 import Repo from '../components/Repo'
-
+import { cacheArray } from '../lib/repo-basic-cache'
 const api = require('../lib/api')
 
 const LANGUAGES = ['JavaScript', 'HTML', 'CSS', 'TypeScript', 'JAVA', 'Python']
@@ -50,6 +49,8 @@ const selectedItemStyle = {
 
 function noop () {}
 
+const isServer = typeof window === 'undefined'
+
 const per_page = 20
 
 const FilterLink = memo(({ name, query, lang, sort, order, page }) => {
@@ -84,6 +85,11 @@ function Search({router, repos}) {
   const { ...querys } = router.query
   const { lang, sort, order, page } = router.query
 
+  useEffect(() => {
+    if (!isServer) {
+      cacheArray(repos.items)
+    }
+  }, [])
 
   return (
     <div className='root'>

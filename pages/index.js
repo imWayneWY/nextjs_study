@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import Repo from '../components/Repo'
 import Router, { withRouter } from 'next/router'
 import LRU from 'lru-cache'
-
+import { cacheArray } from '../lib/repo-basic-cache'
 const cache = new LRU({
   maxAge: 1000 * 60 * 10 //10 mins
 })
@@ -44,6 +44,13 @@ function Index ({ userRepos, userStaredRepos, user, router }) {
       // }, 1000 * 10)
     }
   }, [userRepos, userStaredRepos]) //传入这两个props，这样在10分钟以后才会再次存cache，否则useEffect只在渲染时执行一次！
+
+  useEffect(() => {
+    if (!isServer) { 
+      cacheArray(userRepos)
+      cacheArray(userStaredRepos)
+    }
+  })
   
   if (!user || !user.id) {
     return <div className="root">
