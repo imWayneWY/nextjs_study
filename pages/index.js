@@ -30,9 +30,11 @@ function Index ({ userRepos, userStaredRepos, user, router }) {
     if (!isServer) {
       if (userRepos) {
         cache.set('userRepos', userRepos)
+        cacheArray(userRepos)
       }
       if (userStaredRepos) {
         cache.set('userStaredRepos', userStaredRepos)
+        cacheArray(userStaredRepos)
       }
       // cachedUserRepos = userRepos
       // cachedUserStaredRepos = userStaredRepos
@@ -45,12 +47,6 @@ function Index ({ userRepos, userStaredRepos, user, router }) {
     }
   }, [userRepos, userStaredRepos]) //传入这两个props，这样在10分钟以后才会再次存cache，否则useEffect只在渲染时执行一次！
 
-  useEffect(() => {
-    if (!isServer) { 
-      cacheArray(userRepos)
-      cacheArray(userStaredRepos)
-    }
-  })
   
   if (!user || !user.id) {
     return <div className="root">
