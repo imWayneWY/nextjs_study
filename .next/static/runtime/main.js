@@ -6927,7 +6927,7 @@ function connect(options) {
       error.name = err.name;
       error.stack = err.stack; // __NEXT_DIST_DIR is provided by webpack
 
-      source_map_support_1.rewriteStacktrace(error, "/mnt/d/code/nextjs/nextjs-project/.next");
+      source_map_support_1.rewriteStacktrace(error, "/Users/weiyan/hack/nextjs_study/.next");
       return error;
     }
   };
